@@ -6,13 +6,7 @@
 
 package com.google.appinventor.components.runtime;
 
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
-
 import com.google.appinventor.components.annotations.DesignerComponent;
-import com.google.appinventor.components.annotations.DesignerProperty;
 import com.google.appinventor.components.annotations.PropertyCategory;
 import com.google.appinventor.components.annotations.SimpleEvent;
 import com.google.appinventor.components.annotations.SimpleObject;
@@ -20,142 +14,46 @@ import com.google.appinventor.components.annotations.SimpleProperty;
 import com.google.appinventor.components.common.ComponentCategory;
 import com.google.appinventor.components.common.YaVersion;
 
-@DesignerComponent(
-  category = ComponentCategory.SENSORS,
-  description = "<p>Non-visible component that measures the ambient geomagnetic field for all three physical axes (x, y, z) in Tesla https://en.wikipedia.org/wiki/Tesla_(unit). </p>",
-  iconName = "images/magneticSensor.png",
-  nonVisible = true,
-  version = YaVersion.MAGNETICFIELDSENSOR_COMPONENT_VERSION)
+@DesignerComponent(version = YaVersion.MAGNETICFIELDSENSOR_COMPONENT_VERSION,
+    description = "<p>Non-visible component that measures the ambient geomagnetic field for all three physical axes (x, y, z) in Tesla https://en.wikipedia.org/wiki/Tesla_(unit).</p>",
+    category = ComponentCategory.SENSORS,
+    nonVisible = true,
+    iconName = "images/magneticSensor.png")
 @SimpleObject
+public class MagneticFieldSensor extends MultipleValueSensor {
+  private float xStrength;
+  private float yStrength;
+  private float zStrength;
 
-public class MagneticFieldSensor extends AndroidNonvisibleComponent implements SensorEventListener, Deleteable, OnPauseListener, OnResumeListener, OnStopListener, SensorComponent {
-    private double absoluteStrength;
-    private boolean enabled = true;
-    private boolean listening;
-    private Sensor magneticSensor;
-    private final SensorManager sensorManager;
-    private float xStrength;
-    private float yStrength;
-    private float zStrength;
+  public MagneticFieldSensor(ComponentContainer container, int sensorType) {
+    super(container, sensorType);
+  }
 
-    public MagneticFieldSensor(ComponentContainer container) {
-        super(container.$form());
-        form.registerForOnResume(this);
-        form.registerForOnStop(this);
-        form.registerForOnPause(this);
-        sensorManager = (SensorManager) container.$context().getSystemService("sensor");
-        magneticSensor = sensorManager.getDefaultSensor(2);
-        startListening();
-    }
+  @Override
+  protected void onValuesChanged(float[] values) {
+    xStrength = values[0];
+    yStrength = values[1];
+    zStrength = values[2];
+    MagneticChanged(xStrength, yStrength, zStrength);
+  }
 
-    @SimpleProperty(category = PropertyCategory.BEHAVIOR)
-    public boolean Available() {
-        return sensorManager.getSensorList(2).size() > 0;
-    }
+  @SimpleEvent
+  public void MagneticChanged(float xStrength, float yStrength, float zStrength) {
+    EventDispatcher.dispatchEvent(this, "MagneticChanged", xStrength, yStrength, zStrength);
+  }
 
-    @SimpleProperty(category = PropertyCategory.BEHAVIOR)
-    public float MaximumRange() {
-        return magneticSensor.getMaximumRange();
-    }
+  @SimpleProperty(category = PropertyCategory.BEHAVIOR)
+  public float Xstrength() {
+    return xStrength;
+  }
 
-    @SimpleProperty(category = PropertyCategory.BEHAVIOR)
-    public boolean Enabled() {
-        return enabled;
-    }
+  @SimpleProperty(category = PropertyCategory.BEHAVIOR)
+  public float Ystrength() {
+    return yStrength;
+  }
 
-    @DesignerProperty(defaultValue = "True", editorType = "boolean")
-    @SimpleProperty
-    public void Enabled(boolean localEnabled) {
-        if (enabled != localEnabled) {
-            enabled = localEnabled;
-        }
-        if (enabled) {
-            startListening();
-        } else {
-            stopListening();
-        }
-    }
-
-    @SimpleEvent(description = "Indicates that the magnetic sensor data has changed. ")
-    public void MagneticChanged(float xStrength, float yStrength, float zStrength, double absoluteStrength) {
-        EventDispatcher.dispatchEvent(this, "MagneticChanged", xStrength, yStrength, zStrength, absoluteStrength);
-    }
-
-    @SimpleProperty(category = PropertyCategory.BEHAVIOR)
-    public double AbsoluteStrength() {
-        return absoluteStrength;
-    }
-
-    @SimpleProperty(category = PropertyCategory.BEHAVIOR)
-    public float XStrength() {
-        return xStrength;
-    }
-
-    @SimpleProperty(category = PropertyCategory.BEHAVIOR)
-    public float YStrength() {
-        return yStrength;
-    }
-
-    @SimpleProperty(category = PropertyCategory.BEHAVIOR)
-    public float ZStrength() {
-        return zStrength;
-    }
-
-    private Sensor getMagneticSensor() {
-        Sensor sensor = sensorManager.getDefaultSensor(2);
-        return sensor != null ? sensor : sensorManager.getDefaultSensor(2);
-    }
-
-    public void onResume() {
-        if (enabled) {
-            startListening();
-        }
-    }
-
-    public void onStop() {
-        if (enabled) {
-            stopListening();
-        }
-    }
-
-    public void onDelete() {
-        if (enabled) {
-            stopListening();
-        }
-    }
-
-    public void onPause() {
-        stopListening();
-    }
-
-    private void startListening() {
-        if (!listening && sensorManager != null && magneticSensor != null) {
-            sensorManager.registerListener(this, magneticSensor, 3);
-            listening = true;
-        }
-    }
-
-    private void stopListening() {
-        if (listening && sensorManager != null) {
-            sensorManager.unregisterListener(this);
-            listening = false;
-            xStrength = 0.0f;
-            yStrength = 0.0f;
-            zStrength = 0.0f;
-        }
-    }
-
-    public void onSensorChanged(SensorEvent sensorEvent) {
-        if (enabled && sensorEvent.sensor.getType() == 2) {
-            float[] values = (float[]) sensorEvent.values.clone();
-            xStrength = sensorEvent.values[0];
-            yStrength = sensorEvent.values[1];
-            zStrength = sensorEvent.values[2];
-            absoluteStrength = Math.sqrt((double) (((xStrength * xStrength) + (yStrength * yStrength)) + (zStrength * zStrength)));
-            MagneticChanged(xStrength, yStrength, zStrength, absoluteStrength);
-        }
-    }
-
-    public void onAccuracyChanged(Sensor sensor, int i) {
-    }
+  @SimpleProperty(category = PropertyCategory.BEHAVIOR)
+  public float Zstrength() {
+    return zStrength;
+  }
 }

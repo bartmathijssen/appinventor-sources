@@ -11,25 +11,24 @@ import com.google.appinventor.components.annotations.SimpleObject;
 import android.hardware.SensorEvent;
 
 @SimpleObject
-public abstract class SingleValueSensor extends SensorBase {
-  protected float value;  // most recent value read
+public abstract class MultipleValueSensor extends SensorBase {
+  protected float[] values;  // most recent values read
 
-  public SingleValueSensor(ComponentContainer container, int sensorType) {
+  public MultipleValueSensor(ComponentContainer container, int sensorType) {
     super(container, sensorType);
   }
 
   @Override
   public void onSensorChanged(SensorEvent sensorEvent) {
     if (enabled && sensorEvent.sensor.getType() == sensorType) {
-      final float[] values = sensorEvent.values;
-      value = values[0];
-      onValueChanged(value);
+      values = sensorEvent.values;
+      onValuesChanged(values);
     }
   }
 
-  protected abstract void onValueChanged(float value);
+  protected abstract void onValuesChanged(float[] values);
 
-  protected float getValue() {
-    return value;
+  protected float getValueAtIndex(int index) {
+    return values[index];
   }
 }
