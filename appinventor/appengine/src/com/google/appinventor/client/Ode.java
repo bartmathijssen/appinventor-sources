@@ -225,6 +225,7 @@ public class Ode implements EntryPoint {
   private DeckPanel deckPanel;
   private HorizontalPanel overDeckPanel;
   private Frame tutorialPanel;
+  private Frame helpPanel;
   private int projectsTabIndex;
   private int designTabIndex;
   private int debuggingTabIndex;
@@ -250,6 +251,9 @@ public class Ode implements EntryPoint {
 
   // Is the tutorial toolbar currently displayed?
   private boolean tutorialVisible = false;
+
+  // Is the help sidebar currently displayed?
+  private boolean helpVisible = false;
 
   // Popup that indicates that an asynchronous request is pending. It is visible
   // initially, and will be hidden automatically after the first RPC completes.
@@ -1014,6 +1018,12 @@ public class Ode implements EntryPoint {
     // the project
     tutorialPanel.setVisible(false);
 
+    // Create the Help Panel
+    helpPanel = new TutorialPanel();
+    helpPanel.setWidth("100%");
+    helpPanel.setHeight("100%");
+    helpPanel.setVisible(false);
+
     // Create tab panel for subsequent tabs
     deckPanel = new DeckPanel() {
       @Override
@@ -1233,6 +1243,9 @@ public class Ode implements EntryPoint {
     overDeckPanel.add(tutorialPanel);
     overDeckPanel.setCellWidth(tutorialPanel, "0%");
     overDeckPanel.setCellHeight(tutorialPanel, "100%");
+    overDeckPanel.add(helpPanel);
+    overDeckPanel.setCellWidth(helpPanel, "0%");
+    overDeckPanel.setCellHeight(helpPanel, "100%");
     overDeckPanel.add(deckPanel);
     mainPanel.add(overDeckPanel, DockPanel.CENTER);
     mainPanel.setCellHeight(overDeckPanel, "100%");
@@ -1574,6 +1587,28 @@ public class Ode implements EntryPoint {
     userSettings.getSettings(SettingsConstants.USER_GENERAL_SETTINGS).
             changePropertyValue(SettingsConstants.USER_DYSLEXIC_FONT,
                     "" + dyslexicFont);
+    userSettings.saveSettings(null);
+  }
+
+  /**
+   * Checks whether the user has tutorial sidebar enabled in their settings.
+   *
+   * @return true if tutorial sidebar is enabled, otherwise false.
+   */
+  public static boolean getUserTutorialSidebar() {
+    String value = userSettings.getSettings(SettingsConstants.USER_GENERAL_SETTINGS)
+            .getPropertyValue(SettingsConstants.USER_TUTORIAL_SIDEBAR);
+    return Boolean.parseBoolean(value);
+  }
+
+  /**
+   * Sets whether to use tutorial sidebar for the current user.
+   *
+   * @param enable true if tutorial sidebar should be enabled or false if it should be disabled.
+   */
+  public static void setUserTutorialSidebar(boolean enable) {
+    userSettings.getSettings(SettingsConstants.USER_GENERAL_SETTINGS)
+            .changePropertyValue(SettingsConstants.USER_TUTORIAL_SIDEBAR, Boolean.toString(enable));
     userSettings.saveSettings(null);
   }
 
@@ -2624,6 +2659,18 @@ public class Ode implements EntryPoint {
     }
   }
 
+  public void setHelpVisible(boolean visible) {
+    helpVisible = visible;
+    if (visible) {
+      helpPanel.setVisible(true);
+      helpPanel.setWidth("300px");
+      overDeckPanel.setCellWidth(helpPanel, "300");
+    } else {
+      helpPanel.setVisible(false);
+      overDeckPanel.setCellWidth(helpPanel, "0%");
+    }
+  }
+
   /**
    * Indicate if the tutorial panel is currently visible.
    * @return true if the tutorial panel is visible.
@@ -2648,6 +2695,26 @@ public class Ode implements EntryPoint {
       designToolbar.setTutorialToggleVisible(true);
       setTutorialVisible(true);
     }
+  }
+
+  /**
+   * Indicate if the help panel is currently visible.
+   * @return true if the help panel is visible.
+   *
+   * Note: This value is only valid if in the blocks editor or the designer.
+   * As of this note this routine is called when the "Toogle Help" button
+   * is clicked, and it is only displayed when in the Designer of the Blocks
+   * Editor.
+   */
+
+  public boolean isHelpVisible() {
+    return helpVisible;
+  }
+
+  public void setHelpURL(String newURL) {
+    helpPanel.setUrl(newURL);
+    designToolbar.setHelpToggleVisible(true);
+    setHelpVisible(true);
   }
 
   // Load the user's backpack. This is not called if we are using

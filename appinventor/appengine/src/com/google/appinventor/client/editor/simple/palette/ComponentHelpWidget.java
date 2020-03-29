@@ -10,8 +10,10 @@ import com.google.appinventor.client.ComponentsTranslation;
 import com.google.appinventor.client.Ode;
 import com.google.appinventor.client.utils.PZAwarePositionCallback;
 import com.google.common.base.Strings;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
+import com.google.gwt.event.shared.*;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTML;
@@ -103,10 +105,25 @@ public final class ComponentHelpWidget extends AbstractPaletteItemWidget {
         inner.add(dateCreatedHtml);
       }
       if (url != null) {  // only show if there is a relevant URL
-        HTML link = new HTML("<a href=\"" + url + "\" target=\"_blank\">" +
-            MESSAGES.moreInformation() + "</a>");
-        link.setStyleName("ode-ComponentHelpPopup-Link");
-        inner.add(link);
+        if (Ode.getUserTutorialSidebar()) {
+          final String newURL = url;
+          final PopupPanel panel = this;
+          Label link = new Label(MESSAGES.moreInformation());
+          link.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+              Ode ode = Ode.getInstance();
+              ode.setHelpURL(newURL);
+            }
+          });
+          link.setStyleName("ode-ComponentHelpPopup-Link");
+          inner.add(link);
+        } else {
+          HTML link = new HTML("<a href=\"" + url + "\" target=\"_blank\">" +
+              MESSAGES.moreInformation() + "</a>");
+          link.setStyleName("ode-ComponentHelpPopup-Link");
+          inner.add(link);
+        }
       }
 
       setWidget(inner);

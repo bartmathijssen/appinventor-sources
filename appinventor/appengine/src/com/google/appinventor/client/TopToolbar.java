@@ -93,6 +93,7 @@ public class TopToolbar extends Composite {
   private static final String WIDGET_NAME_SETTINGS = "Settings";
   private static final String WIDGET_NAME_AUTOLOAD = "Autoload Last Project";
   private static final String WIDGET_NAME_DYSLEXIC_FONT = "DyslexicFont";
+  private static final String WIDGET_NAME_TUTORIAL_SIDEBAR = "TutorialSidebar";
   private static final String WIDGET_NAME_HELP = "Help";
   private static final String WIDGET_NAME_ABOUT = "About";
   private static final String WIDGET_NAME_LIBRARY = "Library";
@@ -319,6 +320,13 @@ public class TopToolbar extends Composite {
     } else {
       settingsItems.add(new DropDownItem(WIDGET_NAME_DYSLEXIC_FONT,  MESSAGES.enableOpenDyslexic(),
           new SetFontDyslexicAction()));
+    }
+    if (Ode.getUserTutorialSidebar()) {
+      settingsItems.add(new DropDownItem(WIDGET_NAME_TUTORIAL_SIDEBAR, MESSAGES.disableTutorialSidebar(),
+          new DisableTutorialSidebarAction()));
+    } else {
+      settingsItems.add(new DropDownItem(WIDGET_NAME_TUTORIAL_SIDEBAR, MESSAGES.enableTutorialSidebar(),
+          new EnableTutorialSidebarAction()));
     }
     refreshMenu(settingsDropDown, settingsItems);
   }
@@ -853,6 +861,22 @@ public class TopToolbar extends Composite {
     public void execute() {
       Ode.getInstance().setUserDyslexicFont(false);
       Window.Location.reload();
+    }
+  }
+
+  private class EnableTutorialSidebarAction implements Command {
+    @Override
+    public void execute() {
+      Ode.getInstance().setUserTutorialSidebar(true);
+      createSettingsMenu();
+    }
+  }
+
+  private class DisableTutorialSidebarAction implements Command {
+    @Override
+    public void execute() {
+      Ode.getInstance().setUserTutorialSidebar(false);
+      createSettingsMenu();
     }
   }
 

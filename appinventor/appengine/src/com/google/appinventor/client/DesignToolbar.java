@@ -10,8 +10,6 @@ import com.google.appinventor.client.editor.FileEditor;
 import com.google.appinventor.client.editor.ProjectEditor;
 import com.google.appinventor.client.editor.youngandroid.BlocklyPanel;
 import com.google.appinventor.client.editor.youngandroid.YaBlocksEditor;
-import com.google.appinventor.client.editor.youngandroid.YaFormEditor;
-import com.google.appinventor.client.editor.youngandroid.YaProjectEditor;
 
 import com.google.appinventor.client.explorer.commands.AddFormCommand;
 import com.google.appinventor.client.explorer.commands.ChainableCommand;
@@ -33,7 +31,6 @@ import com.google.appinventor.shared.rpc.project.youngandroid.YoungAndroidSource
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.Scheduler;
 
 import com.google.gwt.user.client.Command;
@@ -112,6 +109,7 @@ public class DesignToolbar extends Toolbar {
   }
 
   private static final String WIDGET_NAME_TUTORIAL_TOGGLE = "TutorialToggle";
+  private static final String WIDGET_NAME_HELP_TOGGLE = "HelpToggle";
   private static final String WIDGET_NAME_ADDFORM = "AddForm";
   private static final String WIDGET_NAME_REMOVEFORM = "RemoveForm";
   private static final String WIDGET_NAME_SCREENS_DROPDOWN = "ScreensDropdown";
@@ -169,8 +167,11 @@ public class DesignToolbar extends Toolbar {
     toolbar.setCellWidth(projectNameLabel, "222px");
 
     addButton(new ToolbarItem(WIDGET_NAME_TUTORIAL_TOGGLE,
-        MESSAGES.toggleTutorialButton(), new ToogleTutorialAction()));
+        MESSAGES.toggleTutorialButton(), new ToggleTutorialAction()));
     setButtonVisible(WIDGET_NAME_TUTORIAL_TOGGLE, false); // Don't show unless needed
+
+    addButton(new ToolbarItem(WIDGET_NAME_HELP_TOGGLE,
+        MESSAGES.toggleHelpButton(), new ToggleHelpAction()));
 
     List<DropDownItem> screenItems = Lists.newArrayList();
     addDropDownButton(WIDGET_NAME_SCREENS_DROPDOWN, MESSAGES.screensButton(), screenItems);
@@ -192,7 +193,7 @@ public class DesignToolbar extends Toolbar {
     Ode.getInstance().getTopToolbar().updateFileMenuButtons(0);
   }
 
-  private class ToogleTutorialAction implements Command {
+  private class ToggleTutorialAction implements Command {
     @Override
     public void execute() {
       Ode ode = Ode.getInstance();
@@ -201,6 +202,19 @@ public class DesignToolbar extends Toolbar {
         ode.setTutorialVisible(false);
       } else {
         ode.setTutorialVisible(true);
+      }
+    }
+  }
+
+  private class ToggleHelpAction implements Command {
+    @Override
+    public void execute() {
+      Ode ode = Ode.getInstance();
+      boolean visible = ode.isHelpVisible();
+      if (visible) {
+        ode.setHelpVisible(false);
+      } else {
+        ode.setHelpVisible(true);
       }
     }
   }
@@ -539,6 +553,14 @@ public class DesignToolbar extends Toolbar {
   }
 
   public void setTutorialToggleVisible(boolean value) {
+    if (value) {
+      setButtonVisible(WIDGET_NAME_HELP_TOGGLE, true);
+    } else {
+      setButtonVisible(WIDGET_NAME_HELP_TOGGLE, false);
+    }
+  }
+
+  public void setHelpToggleVisible(boolean value) {
     if (value) {
       setButtonVisible(WIDGET_NAME_TUTORIAL_TOGGLE, true);
     } else {
