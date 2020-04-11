@@ -90,6 +90,9 @@ A button that, when clicked on, displays a list of the contacts to choose among.
 : Specifies the path of the `ContactPicker`'s image. If there is both an `Image` and a
  [`BackgroundColor`](#ContactPicker.BackgroundColor) specified, only the `Image` will be visible.
 
+{:id="ContactPicker.Margin" .list .do} *Margin*
+: Specifies the ContactPicker`'s margins.
+
 {:id="ContactPicker.PhoneNumber" .text .ro .bo} *PhoneNumber*
 : Returns the primary phone number associated with the selected contact, or the empty string if
  no phone number is associated with the contact.
@@ -225,6 +228,9 @@ An `EmailPicker` is a kind of text box. If the user begins entering the name or 
 
 {:id="EmailPicker.Hint" .text} *Hint*
 : `EmailPicker` hint for the user.
+
+{:id="EmailPicker.Margin" .list .do} *Margin*
+: Specifies the EmailPicker`'s margins.
 
 {:id="EmailPicker.Text" .text} *Text*
 : The text in the `EmailPicker`, which can be set by the programmer in the Designer or Blocks Editor,
@@ -401,6 +407,9 @@ A button that, when clicked on, displays a list of the contacts' phone numbers t
 {:id="PhoneNumberPicker.Image" .text} *Image*
 : Specifies the path of the `PhoneNumberPicker`'s image. If there is both an `Image` and a
  [`BackgroundColor`](#PhoneNumberPicker.BackgroundColor) specified, only the `Image` will be visible.
+
+{:id="PhoneNumberPicker.Margin" .list .do} *Margin*
+: Specifies the PhoneNumberPicker`'s margins.
 
 {:id="PhoneNumberPicker.PhoneNumber" .text .ro .bo} *PhoneNumber*
 : Returns the primary phone number associated with the selected contact, or the empty string if

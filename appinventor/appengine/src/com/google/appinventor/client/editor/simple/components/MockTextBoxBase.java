@@ -136,6 +136,13 @@ abstract class MockTextBoxBase extends MockWrapper {
   }
 
   /*
+   * Sets the textbox's margin property to a new value.
+   */
+  private void setMarginProperty(String margin) {
+    MockComponentsUtil.setWidgetMargin(textBoxWidget, margin);
+  }
+
+  /*
    * Sets the textbox's Text property to a new value.
    */
   private void setTextProperty(String text) {
@@ -180,6 +187,8 @@ abstract class MockTextBoxBase extends MockWrapper {
       refreshForm();
     } else if (propertyName.equals(PROPERTY_NAME_HINT)) {
       setHintProperty(newValue);
+    } else if (propertyName.equals(PROPERTY_NAME_MARGIN)) {
+      setMarginProperty(newValue);
     } else if (propertyName.equals(PROPERTY_NAME_TEXT)) {
       setTextProperty(newValue);
       refreshForm();

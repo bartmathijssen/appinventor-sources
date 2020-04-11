@@ -71,6 +71,9 @@ Button with the ability to detect clicks. Many aspects of its appearance can be 
 : Specifies the path of the `Button`'s image. If there is both an `Image` and a
  [`BackgroundColor`](#Button.BackgroundColor) specified, only the `Image` will be visible.
 
+{:id="Button.Margin" .list .do} *Margin*
+: Specifies the Button`'s margins.
+
 {:id="Button.Shape" .number .do} *Shape*
 : Specifies the shape of the `Button`. The valid values for this property are `0` (default),
  `1` (rounded), `2` (rectangle), and `3` (oval). The `Shape` will not be visible if an
@@ -181,6 +184,9 @@ None
 : Specifies the `CheckBox`'s vertical height as a percentage
  of the [`Screen`'s `Height`](userinterface.html#Screen.Height).
 
+{:id="CheckBox.Margin" .list .do} *Margin*
+: Specifies the CheckBox`'s margins.
+
 {:id="CheckBox.Text" .text} *Text*
 : Specifies the text displayed by the `CheckBox`.
 
@@ -270,6 +276,9 @@ A button that, when clicked on, launches a popup dialog to allow the user to sel
 
 {:id="DatePicker.Instant" .InstantInTime .ro .bo} *Instant*
 : Returns instant of the date that was last picked using the DatePicker.
+
+{:id="DatePicker.Margin" .list .do} *Margin*
+: Specifies the DatePicker`'s margins.
 
 {:id="DatePicker.Month" .number .ro .bo} *Month*
 : Returns the number of the Month that was last picked using the DatePicker.
@@ -377,6 +386,9 @@ Component for displaying images and basic animations.
 : Specifies the `Image`'s vertical height as a percentage
  of the [`Screen`'s `Height`](userinterface.html#Screen.Height).
 
+{:id="Image.Margin" .list .do} *Margin*
+: Specifies the Image`'s margins.
+
 {:id="Image.Picture" .text} *Picture*
 : Specifies the path of the `Image`'s `Picture`.
 
@@ -466,6 +478,9 @@ Labels are components used to show text.
 {:id="Label.HeightPercent" .number .wo .bo} *HeightPercent*
 : Specifies the `Label`'s vertical height as a percentage
  of the [`Screen`'s `Height`](userinterface.html#Screen.Height).
+
+{:id="Label.Margin" .list .do} *Margin*
+: Specifies the Label`'s margins.
 
 {:id="Label.Text" .text} *Text*
 : Specifies the text displayed by the label.
@@ -566,6 +581,9 @@ A button that, when clicked on, displays a list of texts for the user to choose 
 
 {:id="ListPicker.ItemTextColor" .color} *ItemTextColor*
 : The text color of the ListPicker items.
+
+{:id="ListPicker.Margin" .list .do} *Margin*
+: Specifies the ListPicker`'s margins.
 
 {:id="ListPicker.Selection" .text} *Selection*
 : The selected item. When directly changed by the programmer, the [`SelectionIndex`](#ListPicker.SelectionIndex)
@@ -873,6 +891,9 @@ Users enter passwords in a password text box component, which hides the text tha
 
 {:id="PasswordTextBox.Hint" .text} *Hint*
 : `PasswordTextBox` hint for the user.
+
+{:id="PasswordTextBox.Margin" .list .do} *Margin*
+: Specifies the PasswordTextBox`'s margins.
 
 {:id="PasswordTextBox.PasswordVisible" .boolean .bo} *PasswordVisible*
 : Specifies whether the password is hidden (default) or shown.
@@ -1306,6 +1327,9 @@ A `Spinner` component that displays a dialog with a list of elements. These elem
 : Specifies the `Switch`'s vertical height as a percentage
  of the [`Screen`'s `Height`](userinterface.html#Screen.Height).
 
+{:id="Switch.Margin" .list .do} *Margin*
+: Specifies the Switch`'s margins.
+
 {:id="Switch.On" .boolean} *On*
 : True if the switch is in the On state, false otherwise.
 
@@ -1422,6 +1446,9 @@ Users enter text in a text box component.
 {:id="TextBox.Hint" .text} *Hint*
 : `TextBox` hint for the user.
 
+{:id="TextBox.Margin" .list .do} *Margin*
+: Specifies the TextBox`'s margins.
+
 {:id="TextBox.MultiLine" .boolean} *MultiLine*
 : If true, then this `TextBox` accepts multiple lines of input, which are entered using the
  return key. For single line text boxes there is a Done key instead of a return key, and
@@ -1537,6 +1564,9 @@ A button that, when clicked on, opens a dialog to allow the user to select a tim
 
 {:id="TimePicker.Instant" .InstantInTime .ro .bo} *Instant*
 : Returns the instant in time that was last picked using the `TimePicker`.
+
+{:id="TimePicker.Margin" .list .do} *Margin*
+: Specifies the TimePicker`'s margins.
 
 {:id="TimePicker.Minute" .number .ro .bo} *Minute*
 : Returns the hour of the time that was last picked using the `TimePicker`.

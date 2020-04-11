@@ -134,6 +134,9 @@ A special-purpose button. When the user taps an `ImagePicker`, the device's imag
 : Specifies the path of the `ImagePicker`'s image. If there is both an `Image` and a
  [`BackgroundColor`](#ImagePicker.BackgroundColor) specified, only the `Image` will be visible.
 
+{:id="ImagePicker.Margin" .list .do} *Margin*
+: Specifies the ImagePicker`'s margins.
+
 {:id="ImagePicker.Selection" .text .ro .bo} *Selection*
 : Path to the file containing the image that was selected.
 

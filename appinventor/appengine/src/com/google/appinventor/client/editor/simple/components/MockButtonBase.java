@@ -230,6 +230,13 @@ abstract class MockButtonBase extends MockVisibleComponent {
   }
 
   /*
+   * Sets the button's margin property to a new value.
+   */
+  private void setMarginProperty(String margin) {
+    MockComponentsUtil.setWidgetMargin(buttonWidget, margin);
+  }
+
+  /*
    * Sets the button's Text property to a new value.
    */
   private void setTextProperty(String text) {
@@ -313,12 +320,14 @@ abstract class MockButtonBase extends MockVisibleComponent {
     } else if (propertyName.equals(PROPERTY_NAME_IMAGE)) {
       setImageProperty(newValue);
       refreshForm();
+    } else if (propertyName.equals(PROPERTY_NAME_MARGIN)) {
+      setMarginProperty(newValue);
     } else if (propertyName.equals(PROPERTY_NAME_TEXT)) {
       setTextProperty(newValue);
       refreshForm();
     } else if (propertyName.equals(PROPERTY_NAME_TEXTCOLOR)) {
       setTextColorProperty(newValue);
-    } else if (propertyName.equals(PROPERTY_NAME_BUTTONSHAPE)){
+    } else if (propertyName.equals(PROPERTY_NAME_BUTTONSHAPE)) {
       setShapeProperty(newValue);
     }
   }

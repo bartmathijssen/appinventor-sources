@@ -18,6 +18,7 @@ import com.google.appinventor.components.common.PropertyTypeConstants;
 import com.google.appinventor.components.runtime.util.EclairUtil;
 import com.google.appinventor.components.runtime.util.TextViewUtil;
 import com.google.appinventor.components.runtime.util.ViewUtil;
+import com.google.appinventor.components.runtime.util.YailList;
 
 //import com.google.appinventor.components.runtime.parameters.BooleanReferenceParameter;
 import android.graphics.drawable.Drawable;
@@ -25,6 +26,8 @@ import android.os.Build;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.widget.EditText;
+
+import java.util.Arrays;
 
 /**
  * Underlying base class for TextBox, not directly accessible to Simple
@@ -59,6 +62,9 @@ public abstract class TextBoxBase extends AndroidViewComponent
 
   // Backing for text color
   private int textColor;
+
+  // Margin
+  private int[] margins;
 
   // This is our handle on Android's nice 3-d default textbox.
   private Drawable defaultTextBoxDrawable;
@@ -184,6 +190,35 @@ public abstract class TextBoxBase extends AndroidViewComponent
   public void TextAlignment(int alignment) {
     this.textAlignment = alignment;
     TextViewUtil.setAlignment(view, alignment, false);
+  }
+
+  /**
+   * Returns the margins of the `%type%`.
+   *
+   * @return the margins of the button
+   */
+  @SimpleProperty(
+          category = PropertyCategory.APPEARANCE,
+          userVisible = false)
+  public YailList Margin() {
+    return YailList.makeList(Arrays.asList(margins));
+  }
+
+  /**
+   * Specifies the %type%`'s margins.
+   *
+   * @param values margins
+   */
+  @DesignerProperty(editorArgs = PropertyTypeConstants.PROPERTY_TYPE_TEXT,
+          defaultValue = "")
+  @SimpleProperty(
+          category = PropertyCategory.APPEARANCE)
+  public void Margin(String values) {
+    String[] numberStrs = values.split("\\s*,\\s*");
+    for (int i = 0; i < numberStrs.length; i++) {
+      this.margins[i] = Integer.parseInt(numberStrs[i]);
+    }
+    ViewUtil.setLayoutParams(view, margins);
   }
 
   /**

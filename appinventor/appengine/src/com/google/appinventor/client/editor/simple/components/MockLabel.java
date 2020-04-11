@@ -95,6 +95,13 @@ public final class MockLabel extends MockVisibleComponent {
   }
 
   /*
+   * Sets the label's margin property to a new value.
+   */
+  private void setMarginProperty(String margin) {
+    MockComponentsUtil.setWidgetMargin(labelWidget, margin);
+  }
+
+  /*
    * Sets the label's Text property to a new value.
    */
   private void setTextProperty(String text) {
@@ -145,6 +152,8 @@ public final class MockLabel extends MockVisibleComponent {
     } else if (propertyName.equals(PROPERTY_NAME_FONTTYPEFACE)) {
       setFontTypefaceProperty(newValue);
       refreshForm();
+    } else if (propertyName.equals(PROPERTY_NAME_MARGIN)) {
+      setMarginProperty(newValue);
     } else if (propertyName.equals(PROPERTY_NAME_TEXT)) {
       setTextProperty(newValue);
       refreshForm();

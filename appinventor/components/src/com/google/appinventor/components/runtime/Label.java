@@ -16,11 +16,15 @@ import com.google.appinventor.components.common.ComponentCategory;
 import com.google.appinventor.components.common.PropertyTypeConstants;
 import com.google.appinventor.components.common.YaVersion;
 import com.google.appinventor.components.runtime.util.TextViewUtil;
+import com.google.appinventor.components.runtime.util.ViewUtil;
+import com.google.appinventor.components.runtime.util.YailList;
 
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.Arrays;
 
 /**
  * Labels are components used to show text.
@@ -78,6 +82,9 @@ public final class Label extends AndroidViewComponent {
 
   // HTML content of the label
   private String htmlContent;
+
+  // Margin
+  private int[] margins;
 
   /**
    * Creates a new Label component.
@@ -163,6 +170,35 @@ public final class Label extends AndroidViewComponent {
   public void TextAlignment(int alignment) {
     this.textAlignment = alignment;
     TextViewUtil.setAlignment(view, alignment, false);
+  }
+
+  /**
+   * Returns the margins of the `%type%`.
+   *
+   * @return the margins of the button
+   */
+  @SimpleProperty(
+          category = PropertyCategory.APPEARANCE,
+          userVisible = false)
+  public YailList Margin() {
+    return YailList.makeList(Arrays.asList(margins));
+  }
+
+  /**
+   * Specifies the %type%`'s margins.
+   *
+   * @param values margins
+   */
+  @DesignerProperty(editorArgs = PropertyTypeConstants.PROPERTY_TYPE_TEXT,
+          defaultValue = "")
+  @SimpleProperty(
+          category = PropertyCategory.APPEARANCE)
+  public void Margin(String values) {
+    String[] numberStrs = values.split("\\s*,\\s*");
+    for (int i = 0; i < numberStrs.length; i++) {
+      this.margins[i] = Integer.parseInt(numberStrs[i]);
+    }
+    ViewUtil.setLayoutParams(view, margins);
   }
 
   /**

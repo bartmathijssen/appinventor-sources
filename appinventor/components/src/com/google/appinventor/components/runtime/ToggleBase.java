@@ -14,11 +14,15 @@ import com.google.appinventor.components.annotations.SimpleObject;
 import com.google.appinventor.components.annotations.SimpleProperty;
 import com.google.appinventor.components.common.PropertyTypeConstants;
 import com.google.appinventor.components.runtime.util.TextViewUtil;
+import com.google.appinventor.components.runtime.util.ViewUtil;
+import com.google.appinventor.components.runtime.util.YailList;
 
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+
+import java.util.Arrays;
 
 /**
  * Abstract base class for toggleable items with the ability to detect initialization, focus
@@ -45,6 +49,9 @@ public abstract class ToggleBase<T extends CompoundButton> extends AndroidViewCo
 
   // Backing for text color
   private int textColor;
+
+  // Margin
+  private int[] margins;
 
   /**
    * Creates a new ToggleBase component.
@@ -101,6 +108,35 @@ public abstract class ToggleBase<T extends CompoundButton> extends AndroidViewCo
   @SimpleEvent(description = "%type% stopped being the focused component.")
   public void LostFocus() {
     EventDispatcher.dispatchEvent(this, "LostFocus");
+  }
+
+  /**
+   * Returns the margins of the `%type%`.
+   *
+   * @return the margins of the button
+   */
+  @SimpleProperty(
+          category = PropertyCategory.APPEARANCE,
+          userVisible = false)
+  public YailList Margin() {
+    return YailList.makeList(Arrays.asList(margins));
+  }
+
+  /**
+   * Specifies the %type%`'s margins.
+   *
+   * @param values margins
+   */
+  @DesignerProperty(editorArgs = PropertyTypeConstants.PROPERTY_TYPE_TEXT,
+          defaultValue = "")
+  @SimpleProperty(
+          category = PropertyCategory.APPEARANCE)
+  public void Margin(String values) {
+    String[] numberStrs = values.split("\\s*,\\s*");
+    for (int i = 0; i < numberStrs.length; i++) {
+      this.margins[i] = Integer.parseInt(numberStrs[i]);
+    }
+    ViewUtil.setLayoutParams(view, margins);
   }
 
   /**

@@ -35,8 +35,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnLongClickListener;
+import com.google.appinventor.components.runtime.util.YailList;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * Underlying base class for click-based components, not directly accessible to Simple programmers.
@@ -89,6 +91,9 @@ public abstract class ButtonBase extends AndroidViewComponent
 
   // Image path
   private String imagePath = "";
+
+  // Margin
+  private int[] margins;
 
   // This is our handle on Android's nice 3-d default button.
   private Drawable defaultButtonDrawable;
@@ -357,6 +362,35 @@ public abstract class ButtonBase extends AndroidViewComponent
 
     // Update the appearance based on the new value of backgroundImageDrawable.
     updateAppearance();
+  }
+
+  /**
+   * Returns the margins of the `%type%`.
+   *
+   * @return the margins of the button
+   */
+  @SimpleProperty(
+      category = PropertyCategory.APPEARANCE,
+      userVisible = false)
+  public YailList Margin() {
+    return YailList.makeList(Arrays.asList(margins));
+  }
+
+  /**
+   * Specifies the %type%`'s margins.
+   *
+   * @param values margins
+   */
+  @DesignerProperty(editorArgs = PropertyTypeConstants.PROPERTY_TYPE_TEXT,
+      defaultValue = "")
+  @SimpleProperty(
+      category = PropertyCategory.APPEARANCE)
+  public void Margin(String values) {
+    String[] numberStrs = values.split("\\s*,\\s*");
+    for (int i = 0; i < numberStrs.length; i++) {
+      this.margins[i] = Integer.parseInt(numberStrs[i]);
+    }
+    ViewUtil.setLayoutParams(view, margins);
   }
 
   /**

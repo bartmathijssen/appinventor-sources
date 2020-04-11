@@ -6,6 +6,7 @@
 
 package com.google.appinventor.client.editor.simple.components;
 
+import com.google.appinventor.client.Ode;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Timer;
@@ -220,6 +221,17 @@ public final class MockComponentsUtil {
         break;
     }
     DOM.setStyleAttribute(widget.getElement(), "textAlign", align);
+  }
+
+  /**
+   * Sets the margin for the given widget.
+   *
+   * @param widget widget to change margin for
+   * @param margin new margin
+   */
+  static void setWidgetMargin(Widget widget, String margin) {
+    String value = String.join("px ", margin.split("\\s*,\\s*")) + "px";
+    DOM.setStyleAttribute(widget.getElement(), "margin", value);
   }
 
   /**

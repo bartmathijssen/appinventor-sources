@@ -32,8 +32,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import com.google.appinventor.components.runtime.util.YailList;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * Component for displaying images and basic animations.
@@ -60,6 +62,8 @@ public final class Image extends AndroidViewComponent {
   private int scalingMode = Component.SCALING_SCALE_PROPORTIONALLY;
   
   private boolean clickable = false;
+
+  private int[] margins;
 
   /**
    * Creates a new Image component.
@@ -257,5 +261,32 @@ public final class Image extends AndroidViewComponent {
   @SimpleProperty
   public int Scaling() {
     return scalingMode;
+  }
+
+  /**
+   * Returns the margins of the `%type%`.
+   *
+   * @return the margins of the button
+   */
+  @SimpleProperty(
+          category = PropertyCategory.APPEARANCE,
+          userVisible = false)
+  public YailList Margin() {
+    return YailList.makeList(Arrays.asList(margins));
+  }
+
+  /**
+   * Specifies the %type%`'s margins.
+   *
+   * @param values margins
+   */
+  @DesignerProperty(editorArgs = PropertyTypeConstants.PROPERTY_TYPE_TEXT, defaultValue = "")
+  @SimpleProperty(category = PropertyCategory.APPEARANCE)
+  public void Margin(String values) {
+    String[] numberStrs = values.split("\\s*,\\s*");
+    for (int i = 0; i < numberStrs.length; i++) {
+      this.margins[i] = Integer.parseInt(numberStrs[i]);
+    }
+    ViewUtil.setLayoutParams(view, margins);
   }
 }

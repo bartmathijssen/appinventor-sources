@@ -98,6 +98,13 @@ abstract class MockToggleBase<T extends Widget> extends MockWrapper {
   }
 
   /*
+   * Sets the toggle's margin property to a new value.
+   */
+  private void setMarginProperty(String margin) {
+    MockComponentsUtil.setWidgetMargin(toggleWidget, margin);
+  }
+
+  /*
    * The toggle's set text must be implemented in child classes
    */
   abstract void setTextProperty(String text);
@@ -133,6 +140,8 @@ abstract class MockToggleBase<T extends Widget> extends MockWrapper {
     } else if (propertyName.equals(PROPERTY_NAME_FONTTYPEFACE)) {
       setFontTypefaceProperty(newValue);
       refreshForm();
+    } else if (propertyName.equals(PROPERTY_NAME_MARGIN)) {
+      setMarginProperty(newValue);
     } else if (propertyName.equals(PROPERTY_NAME_TEXT)) {
       setTextProperty(newValue);
       refreshForm();

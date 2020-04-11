@@ -64,6 +64,13 @@ abstract class MockImageBase extends MockVisibleComponent {
   }
 
   /*
+   * Sets the image's margin property to a new value.
+   */
+  private void setMarginProperty(String margin) {
+    MockComponentsUtil.setWidgetMargin(image, margin);
+  }
+
+  /*
    * Sets the image's url to a new value.
    */
   private void setPictureProperty(String text) {
@@ -151,7 +158,9 @@ abstract class MockImageBase extends MockVisibleComponent {
   public void onPropertyChange(String propertyName, String newValue) {
     super.onPropertyChange(propertyName, newValue);
 
-    if (propertyName.equals(PROPERTY_NAME_PICTURE)) {
+    if (propertyName.equals(PROPERTY_NAME_MARGIN)) {
+      setMarginProperty(newValue);
+    } else if (propertyName.equals(PROPERTY_NAME_PICTURE)) {
       setPictureProperty(newValue); // setUrl() triggers onLoad
     } else if (propertyName.equals(PROPERTY_NAME_WIDTH)) {
       resizeImage();

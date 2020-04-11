@@ -11,6 +11,7 @@ import com.google.appinventor.components.runtime.Component;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
@@ -200,5 +201,33 @@ public final class ViewUtil {
   public static void setBackgroundDrawable(View view, Drawable drawable) {
     view.setBackgroundDrawable(drawable);
     view.invalidate();
+  }
+
+  /**
+   * Sets the margins for a view.
+   */
+  public static void setLayoutParams(View view, int top, int right, int bottom, int left) {
+    int pixelTop = calculatePixels(view, top);
+    int pixelRight = calculatePixels(view, right);
+    int pixelBottom = calculatePixels(view, bottom);
+    int pixelLeft = calculatePixels(view, left);
+
+    ViewGroup.LayoutParams params = view.getLayoutParams();
+    ViewGroup.MarginLayoutParams s = (ViewGroup.MarginLayoutParams) params;
+    s.setMargins(pixelLeft, pixelTop, pixelRight, pixelBottom);
+
+    view.setLayoutParams(params);
+  }
+
+  /**
+   * Sets the margins for a view.
+   */
+  public static void setLayoutParams(View view, int[] margins) {
+    int marginTop = margins[0];
+    int marginRight = margins[1];
+    int marginBottom = margins[2];
+    int marginLeft = margins[3];
+
+    setLayoutParams(view, marginTop, marginRight, marginBottom, marginLeft);
   }
 }
